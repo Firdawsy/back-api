@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Profile {
 
+    private String guid;
+
     private String login;
 
     @JsonIgnore

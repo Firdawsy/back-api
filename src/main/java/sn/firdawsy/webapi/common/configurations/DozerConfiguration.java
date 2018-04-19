@@ -1,4 +1,4 @@
-package sn.firdawsy.webapi.common.configurations.security;
+package sn.firdawsy.webapi.common.configurations;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.context.annotation.Bean;

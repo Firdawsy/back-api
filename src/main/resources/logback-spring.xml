@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true">
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <jmxConfigurator/>
+
+    <property name="LOG_PATH" value="${LOG_PATH:-${java.io.tmpdir:-/tmp}}"/>
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}firdawsy-api.log}"/>
+    <property name="LOG_ERROR_FILE" value="firdawsy-api-error.log"/>
+    <property name="LOG_ACCESS_FILE" value="firdawsy-api-access.log"/>
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/${LOG_FILE}</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <FileNamePattern>${LOG_PATH}/${LOG_FILE}.%d{yyyyMMdd}.%i.log.gz</FileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <MaxHistory>30</MaxHistory>
+            <!-- or whenever the file size reaches 10MB -->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${FILE_LOG_PATTERN}</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-ERROR"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <File>${LOG_PATH}/${LOG_ERROR_FILE}</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <FileNamePattern>${LOG_PATH}/${LOG_ERROR_FILE}.%d{yyyyMMdd}.%i.log.gz</FileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <MaxHistory>30</MaxHistory>
+            <!-- or whenever the file size reaches 10MB -->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${FILE_LOG_PATTERN}</Pattern>
+        </encoder>
+    </appender>
+
+
+    <springProfile name="dev">
+        <logger name=" fr.april.firdawsy.webapi" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <!--<appender-ref ref="ACCESS"/>-->
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
+        <logger name="fr.april.firdawsy.webapi.common.configurations.restoperations" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test">
+        <logger name=" fr.april.firdawsy.webapi" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <logger name="fr.april.firdawsy.webapi.common.configurations.restoperations" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="valid, preproduction, production">
+        <logger name=" fr.april.firdawsy.webapi" level="INFO" additivity="false">
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
+
+        <logger name="fr.april.firdawsy.webapi.common.configurations.restoperations" level="INFO" additivity="false">
+            <appender-ref ref="FILE"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <!--<springProfile name="integ, valid">-->
+    <!--<logger name="org.springframework.ws.client.MessageTracing">-->
+    <!--<level value="TRACE"/>-->
+    <!--</logger>-->
+    <!--</springProfile>-->
+
+</configuration>

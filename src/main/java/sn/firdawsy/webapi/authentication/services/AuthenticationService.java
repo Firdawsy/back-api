@@ -98,8 +98,7 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public Optional<Profile> getProfile(String profileId) {
-        ProfileEntity profileEntity = profileRepository.findByLogin(profileId);
-        return profileEntity == null ? Optional.empty() : Optional.of(mapper.map(profileEntity, Profile.class));
+        return profileRepository.findByLogin(profileId).map(profileEntity -> mapper.map(profileEntity, Profile.class));
     }
 
     /**

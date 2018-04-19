@@ -18,6 +18,8 @@ import sn.firdawsy.webapi.common.models.EntityCore;
 @NoArgsConstructor
 public class ProfileEntity extends EntityCore {
 
+    private String guid;
+
     @Indexed(unique = true)
     private String login;
 
