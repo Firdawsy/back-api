@@ -6,10 +6,10 @@
 
     <jmxConfigurator/>
 
-    <property name="LOG_PATH" value="${LOG_PATH:-${java.io.tmpdir:-/tmp}}"/>
-    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}firdawsy-api.log}"/>
-    <property name="LOG_ERROR_FILE" value="firdawsy-api-error.log"/>
-    <property name="LOG_ACCESS_FILE" value="firdawsy-api-access.log"/>
+    <property name="LOG_PATH" value="${LOG_PATH:-${java.io.tmpdir:-/tmp}}/Firdawsy"/>
+    <property name="LOG_FILE" value="${LOG_FILE:-/back-api.log}"/>
+    <property name="LOG_ERROR_FILE" value="back-api-error.log"/>
+    <property name="LOG_ACCESS_FILE" value="back-api-access.log"/>
 
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -53,7 +53,6 @@
             <Pattern>${FILE_LOG_PATTERN}</Pattern>
         </encoder>
     </appender>
-
 
     <springProfile name="dev">
         <logger name=" fr.april.firdawsy.webapi" level="INFO" additivity="false">
